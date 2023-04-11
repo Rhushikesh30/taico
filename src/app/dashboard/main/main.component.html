@@ -1,0 +1,121 @@
+<section class="content">
+  <!-- <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="row clearfix">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="header">
+              <h2>
+                <strong>API Logs</strong>
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <form [formGroup]="apiLogForm" (ngSubmit)="onSubmit()">
+        <div class="card">
+          <div class="body">
+            <div class="row clearfix">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4">
+                <mat-label>Tenant Name<i style="color: red;">*</i></mat-label>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-select formControlName="tenant_id" required [(value)]="selectedTenantName">
+                    <!-- <mat-option value="">Select Tenant Name</mat-option> -->
+                    <mat-option [value]="item.id" *ngFor="let item of tenants">{{item.tenant_name}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="apiLogForm.get('tenant_id')">Please select Tenant Name</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4">
+                <mat-label>Endpoint<i style="color: red;">*</i></mat-label>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-select formControlName="endpoint_id" required [(value)]="selectedEndPointName">
+                    <!-- <mat-option value="">Select Endpoint</mat-option> -->
+                    <mat-option [value]="item.id" *ngFor="let item of endpoints">{{item.endpoint}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="apiLogForm.get('endpoint_id')">Please select endpoint</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4">
+                <mat-label>From Date</mat-label>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input matInput type="datetime-local" min="2023-03-01T00:00" [max]="currentDate" placeholder="yyyy-MM-ddTHH:mm:ss" step="1"
+                    formControlName="from_date" required />
+                </mat-form-field>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4">
+                <mat-label>To Date</mat-label>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input matInput type="datetime-local" min="2023-03-01T00:00" [max]="currentDate" placeholder="yyyy-MM-ddTHH:mm:ss" step="1"
+                    formControlName="to_date" required />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="button-demo" style="text-align: center;">
+              <button class="btn btn-primary" type="submit" id="submit" name="submit" value="Submit">
+                <i class="fa fa-spinner fa-spin" *ngIf="showUploadLoader"></i>
+                Submit</button>
+              <button onclick="location.reload(true);" class="btn btn-danger">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="body">
+          <div style="text-align: center;" *ngIf="isTableVisible==false">
+            <div style="font-weight: bold;">Logs not found</div>
+            <img  src="assets/images/pages/data_not_found.svg" style="width: 30%;">          
+          </div>
+          <div class="table-responsive" *ngIf="isTableVisible">
+            <mat-table #table [dataSource]="logDataSource"  matSort>
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef style="color: white;">Actions</mat-header-cell>
+                <mat-cell *matCellDef="let row;">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button (click)="getLogAction(row,true)" mat-menu-item>
+                      <mat-icon>visibility</mat-icon>
+                      <span>View</span>
+                    </button>
+                    <button (click)="getLogAction(row,false)" mat-menu-item>
+                      <mat-icon>download</mat-icon>
+                      <span>Download</span>
+                    </button>
+                  </mat-menu>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="color: white;">Log id</mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="color: white;">Status</mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.status}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="created_date_time">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="color: white;">Created At</mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.created_date_time}}</mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="logColumns" style="background-color:#666666;"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: logColumns;" [style.cursor]="'pointer'" matRipple></mat-row>
+            </mat-table>
+            <mat-paginator #logSourcePaginator="matPaginator" [length]="paginatorCount" (page)="pageChanged($event)"
+              [pageSizeOptions]="[ 10, 15, 20]" [showFirstLastButtons]="true">
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

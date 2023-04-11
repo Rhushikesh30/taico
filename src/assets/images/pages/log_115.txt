@@ -1,0 +1,13 @@
+**********FINANCE-DETAILS**********
+ Total Data Count:-15
+ Skipped data Count :- 5 
+duplicate pre_tred_doc_no :- [1000000000, 1000000002, 1000000004, 1000000006, 1000000008]
+**********REFINANCE-DETAILS**********
+ Total Data Count:-15
+ Skipped data Count :- 0 
+**********DEPOSIT-DETAILS**********
+ Total Data Count:-32
+ Skipped data Count :- 0 
+
+**********API BODY INFORMATION**********
+ Data not found for body creation

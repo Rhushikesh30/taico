@@ -1,0 +1,71 @@
+<div class="container-fluid p-0">
+  <div class="row g-0">
+    <div class="col-lg-4">
+      <div class="auth-content p-4 d-flex align-items-center min-vh-100">
+        <div class="w-100">
+          <div class="row justify-content-center">
+            <div class="col-lg-9">
+              <div>
+                <div class="text-center">
+                  <div>
+                    <!-- <a routerLink="" class="logo-full"><img src="assets/images/rhythmflows_logo.png" alt="logo-full"></a> -->
+                  </div>
+
+                  <h4 class="font-20 mt-4">Welcome Back !</h4>
+                  <p class="text-muted">Sign in to continue to API Integration.</p>
+                </div>
+                <div class="p-2 mt-5">
+                  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div *ngIf="error" class="alert alert-danger mb-3 mt-0">{{error}}</div>
+                    <div class="form-group auth-form-group mb-4">
+                      <mat-label>Username</mat-label>
+                      <mat-form-field class="example-full-width" appearance="outline">                          
+                        <input matInput formControlName="username" id="username" placeholder="Username" required>
+                        <mat-icon matSuffix>face</mat-icon>
+                        <mat-error *ngIf="loginForm.get('username').hasError('required')">
+                          Username is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="form-group auth-form-group mb-4">
+                      <mat-label>Password</mat-label>
+                      <mat-form-field class="example-full-width" appearance="outline">                          
+                        <input matInput formControlName="password" id="password" placeholder="Password" 
+                          [type]="hide ? 'password' : 'text'" required>
+                        <mat-icon matSuffix (click)="hide = !hide">
+                          {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                          Password is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="flex-sb-m w-full p-t-15 p-b-20">
+                      <div>
+                        <a class="txt1" routerLink="/authentication/forgot-password">Forgot Password?</a>
+                      </div>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                      <button mat-flat-button color="primary" [disabled]="submitted" class="login100-form-btn" type="submit">
+                        Login
+                        <em class="fa fa-spinner fa-spin" *ngIf="submitted"></em>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                <div class="mt-5 text-center">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <!-- <div class="auth-bg">
+        <div class="bg-overlay"></div>
+      </div> -->
+    </div>
+  </div>
+</div>

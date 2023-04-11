@@ -1,0 +1,67 @@
+<section class="content">
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="header">
+                            <h2>
+                                <strong>Upload Flat File</strong>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <mat-stepper #stepper class="card">
+                <mat-step>
+                    <form [formGroup]="uploadFileForm" >
+                        <ng-template matStepLabel>Uplad Flat Files</ng-template>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4 ">
+                            <div class="form-group">
+                                <mat-label>File Name<i style="color: red;">*</i></mat-label>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-select formControlName="file_id" required [(value)]="selectedFlatFile">
+                                        <mat-option value="">Select File</mat-option>
+                                        <mat-option [value]="file.id"
+                                            *ngFor="let file of flat_file_names">{{file.flat_file_name}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="uploadFileForm.get('file_id')">Please Select File</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="button-demo" style="text-align: center;">
+                            <label for="upload" class="btn btn-primary btn-border-radius waves-effect">Choose
+                                File</label>
+                            <input  #fileInput type="file" (change)="onFileSelected($event)" id="upload" hidden />
+                            <button  class="btn btn-primary" (click)="onSubmit()" id="submit" name="submit" value="Submit"
+                                [disabled]="submitDisabled">                            
+                                <i class="fa fa-spinner fa-spin" *ngIf="showUploadLoader"></i>
+                                {{BTN_VAL}}</button>
+                            <button  onclick="location.reload(true);" class="btn btn-danger">Cancel</button>
+                        </div>
+                        <div>
+                            <button mat-button matStepperNext >Next</button>
+                          </div>                    
+                    </form>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Send to PSB Online</ng-template>
+                    <p><span style="color: red;font-weight: bold;">Note :</span><span> When You Click on send button the data is send to PSB online.</span></p>
+                    <div style="text-align: center;">
+                        <button mat-raised-button class="btn-primary" (click)="sendToPSB()" [disabled]="showLoader" >
+                            <i class="fa fa-spinner fa-spin" *ngIf="showLoader"></i>
+                            send
+                        </button>
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                    </div>
+                </mat-step>
+            </mat-stepper>
+        </div>
+    </div>
+</section>

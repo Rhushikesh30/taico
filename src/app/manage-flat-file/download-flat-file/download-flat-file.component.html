@@ -1,0 +1,88 @@
+<section class="content">
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="header">
+                        <h2>
+                            <strong>Download Flat File</strong>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <form [formGroup]="transactionFormGroup" (ngSubmit)="onSubmit()">
+            <div class="card">
+                <div class="body">
+                    <div class="row clearfix">
+                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4">
+                            <div class="form-group">
+                                <mat-label>Flat File<i style="color: red;">*</i></mat-label>
+                                <mat-form-field class="example-full-width" appearance="outline">                                                
+                                    <mat-select formControlName="file_id" required [(value)]="selectedFlatFile">
+                                    <ng-container *ngIf="fileNames">
+                                        <mat-option *ngFor="let subitem of fileNames"  [value]="subitem.id">{{subitem.flat_file_name}}</mat-option>
+                                    </ng-container>    
+                                    </mat-select>
+                                    <mat-error *ngIf="transactionFormGroup.get('file_id')">Flat file name is Required</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4">
+                            <div class="form-group">
+                                <mat-label>From Date<i style="color: red;">*</i></mat-label>
+                                <mat-form-field class="example-full-width" appearance="outline">                                                
+                                    <input matInput [matDatepicker]="from_date"   id="from_date" 
+                                       formControlName="from_date" disabled="true">
+                                    <mat-datepicker-toggle matSuffix [for]="from_date"  ></mat-datepicker-toggle>
+                                    <mat-datepicker #from_date></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4 ">
+                            <div class="form-group">
+                                <mat-label>To Date<i style="color: red;">*</i></mat-label>
+                                <mat-form-field class="example-full-width" appearance="outline">                                                
+                                    <input matInput [matDatepicker]="to_date"   id="to_date" 
+                                       formControlName="to_date" disabled="true" >
+                                    <mat-datepicker-toggle matSuffix [for]="to_date"  ></mat-datepicker-toggle>
+                                    <mat-datepicker #to_date></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="body" style="text-align: center;">
+                    <div style="display: inline-flex;">
+                        <ng-container *ngIf="progress!=0">
+                            <mat-progress-spinner *ngIf="progress!=0"
+                            class="example-margin"
+                            color="color"
+                            [mode]="mode"
+                            [value]="progress"
+                            diameter="30"
+                            >
+                             </mat-progress-spinner>
+                             <span style="margin-top:7%">{{progress}} %</span>
+                        </ng-container>
+                    </div>
+                    <div class="button-demo">
+                        <button class="btn btn-primary mr5" type="submit" [disabled]="showLoader" name="submit" value="Submit">
+                                Download
+                        </button>
+                        <button class="btn btn-danger" type="button" (click)="onCancelForm()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</section>
